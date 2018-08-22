@@ -111,6 +111,15 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
+.giveanswer{
+	float: left;
+	width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    
+
+}
+
 
 
 

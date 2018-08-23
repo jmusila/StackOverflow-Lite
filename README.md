@@ -1,4 +1,4 @@
-
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jonathanmusila/StackOverflow-Lite/blob/gh-pages/LICENSE)
 
 # StackOverflow-Lite
 StackOverflow-Lite is a platform where people can ask questions and answer questions

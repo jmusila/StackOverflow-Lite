@@ -4,9 +4,9 @@ sys.path.append('/home/jonathan/Desktop/StackApp/app/tests')
 sys.path.append('/home/jonathan/Desktop/StackApp/app')
 import os
 import json
-from app.app import create_app
+from app import create_app
 from question import Question
-from app.app import answer,question,user
+from app import answer,question,user
 
 
 class TestAnswerFunctinality(unittest.TestCase):
@@ -31,22 +31,19 @@ class TestAnswerFunctinality(unittest.TestCase):
         """
         Tests a user can post a question.
         """
-        response = self.client.post("/api/v1/register",
-                                    data=json.dumps(dict(first_name="john",
-                                                         last_name="kiptoo",
+        response = self.client.post("/api/v1/register",data=json.dumps(dict(first_name="john",
+                                                        last_name="kiptoo",
                                                          username="jkiptoo",
                                                          email="jkip@gmal.com",
                                                          password="jkip")),
                                     content_type="application/json")
 
-        response = self.client.post("/api/v1/login",
-                                    data=json.dumps(dict(
+        response = self.client.post("/api/v1/login",data=json.dumps(dict(
                                         username_or_email="jkip",
                                         password="jkip")),
                                     content_type="application/json")
 
-        response = self.client.post("/api/v1/question",
-                                    data=json.dumps(self.question),
+        response = self.client.post("/api/v1/question",data=json.dumps(self.question),
                                     content_type="application/json")
         response = self.client.post("/api/v1/questions/1/answers",
                                     data=json.dumps(self.answer),
@@ -59,8 +56,7 @@ class TestAnswerFunctinality(unittest.TestCase):
         """
         Tests user cannnot answer a question without body 
         """
-        response = self.client.post("/api/v1/questions/1/answers",
-                                 data=json.dumps(dict(answer_body=" ")),
+        response = self.client.post("/api/v1/questions/1/answers",data=json.dumps(dict(answer_body=" ")),
                                  content_type="application/json")
         self.assertEqual(response.status_code, 401)
         response_msg = json.loads(response.data.decode("UTF-8"))
@@ -72,8 +68,7 @@ class TestAnswerFunctinality(unittest.TestCase):
         """
         Tests user can get all answers for a partiular question.
         """
-        response = self.client.get("/api/v1/questions/1/answers",
-                                data=json.dumps(dict()),
+        response = self.client.get("/api/v1/questions/1/answers", data=json.dumps(dict()),
                                 content_type="application/json")
         self.assertEqual(response.status_code, 200)
         response_msg = json.loads(response.data.decode("UTF-8"))
@@ -81,20 +76,17 @@ class TestAnswerFunctinality(unittest.TestCase):
     
 
     def test_user_must_login_to_answer_question(self):
-        response = self.client.post("/api/v1/register",
-                                    data=json.dumps(dict(first_name="john",
+        response = self.client.post("/api/v1/register",data=json.dumps(dict(first_name="john",
                                                          last_name="kiptoo",
                                                          username="jkip",
                                                          email="jkip@gmal.com",
                                                          password="jkip")),
                                     content_type="application/json")
 
-        response = self.client.post("/api/v1/question",
-                                    data=json.dumps(dict(title="gfgf ghfdvhf",
+        response = self.client.post("/api/v1/question",data=json.dumps(dict(title="gfgf ghfdvhf",
                                     content = "gdfdg dgvgr")),
                                     content_type="application/json")
-        response = self.client.post("/api/v1/questions/1/answers",
-                                    data=json.dumps(self.answer),
+        response = self.client.post("/api/v1/questions/1/answers",data=json.dumps(self.answer),
                                     content_type="application/json")
         self.assertEqual(response.status_code, 400)
         response_msg = json.loads(response.data.decode("UTF-8"))
@@ -102,8 +94,7 @@ class TestAnswerFunctinality(unittest.TestCase):
 
     def test_user_must_be_registered_to_answer_question(self):
         
-        response = self.client.post("/api/v1/questions/1/answers",
-                                    data=json.dumps(self.answer),
+        response = self.client.post("/api/v1/questions/1/answers",data=json.dumps(self.answer),
                                     content_type="application/json")
         self.assertEqual(response.status_code, 400)
         response_msg = json.loads(response.data.decode("UTF-8"))

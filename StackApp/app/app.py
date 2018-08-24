@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_jwt_extended import create_access_token
 import sys
 sys.path.append('/home/jonathan/Desktop/StackApp/app/models')
 sys.path.append('/home/jonathan/Desktop/StackApp/app/common')
+sys.path.append('/home/jonathan/Desktop/StackApp')
 from datetime import datetime
 from config import app_config
 from question import Question
+from db import connectDB
 from answer import Answer
 from user import User
 from validators import *
@@ -22,20 +25,12 @@ def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
 
-    def connectToDb():
-        connectionString=(dbname=mydb, user=jonathan, password=jonathan, host=localhost, port=5432)
-        print (connectionString)
-        try:
-            return psycopg2.connect(connectionString)
-        except:
-            print ("Cant connect to the database")
-
     @app.route("/api/v1/register", methods=["POST"])
     def register_new_user():
         request_data = request.get_json()
         user_id = str(len(user.users) + 1)
 
-        user.create_user(user_id, request_data["names"],
+       user.create_user(user_id, request_data["names"],
                         request_data["username"], request_data["email"],
                         request_data["password"])
 
@@ -71,13 +66,6 @@ def create_app(config_name):
 
     @app.route("/api/v1/users", methods=["GET"])
     def get_all_users():
-        conn = connectToDb()
-        cur = conn.cursor()
-        try:
-            cur.execute("SELECT names, username, email from User")
-        except:
-            print("Error in getting users")
-            results = cur.fetchall()
         return jsonify({"Users": user.users}), 200
 
     @app.route("/api/v1/question", methods=["POST"])
@@ -135,13 +123,6 @@ def create_app(config_name):
 
     @app.route("/api/v1/questions/<questionId>/answers", methods=["GET"])
     def get_all_answers(questionId):
-        conn = connectToDb()
-        cur = conn.cursor()
-        try:
-            cur.execute("select answer_body, date_posted, question_id, posted_by from User")
-        except:
-            print("Error in getting answers")
-            results = cur.fetchall()
-        return jsonify({"Answers": answer.answers}), 200
+        return jsonify({"Answers": answer.answers}), 200 
 
     return app

@@ -1,9 +1,12 @@
 import unittest
+import sys
+sys.path.append('/home/jonathan/Desktop/StackApp/app/tests')
+sys.path.append('/home/jonathan/Desktop/StackApp/app')
 import os
 import json
-from app.app import create_app
-from app.models.questions import Question
-from app.app import answer,question,user
+from app import create_app
+from question import Question
+from app import answer,question,user
 
 
 class TestQuestionFunctinality(unittest.TestCase):
@@ -25,10 +28,8 @@ class TestQuestionFunctinality(unittest.TestCase):
         """
         Tests user cannnot ask a question without body content
         """
-        response = self.client.post("/api/v1/question",
-                                 data=json.dumps(dict(title="how to delete git branch",
-                                                      content="")),
-                                 content_type="application/json")
+        response = self.client.post("/api/v1/question",data=json.dumps(dict(title="how to delete git branch",
+                                                      content="")),content_type="application/json")
         self.assertEqual(response.status_code, 401)
         response_msg = json.loads(response.data.decode("UTF-8"))
         self.assertIn("Content is required",
@@ -38,14 +39,12 @@ class TestQuestionFunctinality(unittest.TestCase):
         """
         Tests user cannnot add a question without title
         """
-        response = self.client.post("/api/v1/question",
-                                 data=json.dumps(dict(title="",
+        response = self.client.post("/api/v1/question",data=json.dumps(dict(title="",
                                                       content="I want to delete a branch both locally..")),
                                  content_type="application/json")
         self.assertEqual(response.status_code, 401)
         response_msg = json.loads(response.data.decode("UTF-8"))
-        self.assertIn("Title is required",
-                      response_msg["Message"])
+        self.assertIn("Title is required",response_msg["Message"])
 
     def test_user_can_fetch_all_questions(self):
         """

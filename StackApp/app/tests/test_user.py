@@ -1,9 +1,12 @@
 import unittest
 import os
+import sys
+sys.path.append('/home/jonathan/Desktop/StackApp/app/tests')
+sys.path.append('/home/jonathan/Desktop/StackApp/app')
 import json
-from app.app import create_app
-from app.models.users import User
-from app.app import answer,question,user
+from app import create_app
+from users import User
+from app import answer,question,user
 
 
 class TestUserFunctinality(unittest.TestCase):
@@ -28,44 +31,27 @@ class TestUserFunctinality(unittest.TestCase):
         """
         Test new user can be registered to the system.
         """
-        response = self.client.post("/api/v1/register",
-                                    data=json.dumps(self.user),
+        response = self.client.post("/api/v1/register",data=json.dumps(self.user),
                                     content_type="application/json")
         self.assertEqual(response.status_code, 201)
         response_msg = json.loads(response.data.decode("UTF-8"))
         self.assertEqual("User successfully created", response_msg["Message"])
 
-    def test_user_registration_empty_firstname(self):
+    def test_user_registration_empty_names(self):
         """
         Test user cannot enter blank firstname.
         """
         response = self.client.post("/api/v1/register",
-                                    data=json.dumps(dict(first_name="",
-                                                         last_name="testlastnam",
+                                    data=json.dumps(dict(names="",
                                                          username="testusername",
                                                          email="testEvet@gmail.com",
                                                          password="testpassword")),
                                     content_type="application/json")
         self.assertEqual(response.status_code, 401)
         response_msg = json.loads(response.data.decode("UTF-8"))
-        self.assertEqual("First name is required",
+        self.assertEqual("Names are required",
                          response_msg["Message"])
 
-    def test_user_registration_empty_lastname(self):
-        """
-        Test user cannot enter blank last name.
-        """
-        response = self.client.post("/api/v1/register",
-                                    data=json.dumps(dict(first_name="Eva",
-                                                         last_name="",
-                                                         username="testusername",
-                                                         email="testEvet@gmail.com",
-                                                         password="testpassword")),
-                                    content_type="application/json")
-        self.assertEqual(response.status_code, 401)
-        response_msg = json.loads(response.data.decode("UTF-8"))
-        self.assertEqual("Last name is required",
-                         response_msg["Message"])
 
     def test_user_registration_empty_password(self):
         """

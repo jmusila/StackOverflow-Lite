@@ -3,7 +3,10 @@ sudo: true
 language: python
 python:
   - "3.5"
+<<<<<<< HEAD
   - "2.7"
+=======
+>>>>>>> e96424217cbc37538dc19b2407b9fe31ffe88215
 # command to install dependencies
 install: 
   - pip install -r requirements.txt
@@ -12,4 +15,8 @@ install:
 script: 
   nosetests --with-coverage --cover-package=app
 after_success:
+<<<<<<< HEAD
   - coveralls
+=======
+  - coveralls
+>>>>>>> e96424217cbc37538dc19b2407b9fe31ffe88215

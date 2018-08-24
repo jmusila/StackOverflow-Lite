@@ -1,6 +1,11 @@
+import datetime
+import psycopg2
+import psycopg2.extras
+from flask_jwt_extended import create_access_token
+
 class User(object):
 
-    def __init__(self):
+    def __init__(self,):
         self.users = []
 
     def create_user(self, user_id, names, username, email, password):

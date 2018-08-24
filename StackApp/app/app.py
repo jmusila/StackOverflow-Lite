@@ -30,11 +30,13 @@ def create_app(config_name):
         request_data = request.get_json()
         user_id = str(len(user.users) + 1)
 
-       user.create_user(user_id, request_data["names"],
+        user.create_user(user_id, request_data["first_name"],
+                        request_data["last_name"],
                         request_data["username"], request_data["email"],
                         request_data["password"])
 
-        return jsonify({'Message': 'User successfully created', 'User': user.users[-1]}), 201
+        return jsonify({
+            'Message': 'User successfully created','User': user.users[-1]}), 201
 
     @app.route("/api/v1/login", methods=["POST"])
     def login_user():

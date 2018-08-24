@@ -7,19 +7,19 @@ def connectDB():
     try:
         return psycopg2.connect(connection_string)
     except:
-        print('Can\'t connect to database')
+        print('Cannot connect to database')
 
 def create_db_tables():
     queries = [
         'DROP TABLE IF EXISTS "answer" CASCADE',
         'DROP TABLE IF EXISTS "question" CASCADE',
-        'DROP TABLE IF EXISTS "user" CASCADE',
+        'DROP TABLE IF EXISTS "users" CASCADE',
         """
         CREATE TABLE answer (
             answer_id SERIAL PRIMARY KEY NOT NULL, 
             answer_body VARCHAR(500) NOT NULL, 
             question_id INT NOT NULL, 
-            date_posted TIMESTAMP NOT NULL, 
+            date_posted TIMESTAMPTZ NOT NULL, 
             posted_by VARCHAR(140) NOT NULL 
             );
         """,
@@ -28,7 +28,7 @@ def create_db_tables():
             question_id SERIAL PRIMARY KEY NOT NULL, 
             title VARCHAR(200) NOT NULL, 
             content VARCHAR(500) NOT NULL, 
-             date_posted TIMESTAMP NOT NULL, 
+             date_posted TIMESTAMPTZ NOT NULL, 
             posted_by VARCHAR(140) NOT NULL
             );
         """,

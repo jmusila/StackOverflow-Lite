@@ -3,8 +3,9 @@ sudo: true
 language: python
 python:
   - "3.5"
-<<<<<<< HEAD
   - "2.7"
+<<<<<<< HEAD
+ 
 =======
 >>>>>>> e96424217cbc37538dc19b2407b9fe31ffe88215
 # command to install dependencies
